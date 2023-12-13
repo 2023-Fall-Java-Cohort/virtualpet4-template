@@ -5,6 +5,7 @@ import NavBar from './components/NavBarComponent'
 import { AuthProvider } from './contexts/AuthContext'
 import ShowSheltersComponent from './components/ShowSheltersComponent'
 import AddEditShelterPage from './pages/AddEditShelterPage'
+import ShowPetsPage from './pages/ShowPetsPage'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/shelters" element={<ShowSheltersComponent />} />
           <Route path="/edit-shelter/:shelterId" element={<AddEditShelterPage />} />
+          <Route path="/shelter-pets/:shelterId" element={<ShowPetsPage />} />
         </Routes>
       </AuthProvider>
     </Router>

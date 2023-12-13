@@ -23,7 +23,7 @@ const AddEditShelterPage = () => {
             }
             else {
                 // new shelter
-                const response = await axios.post('/api/shelter', shelterData);
+                await axios.post('/api/shelter', shelterData);
                 // updatedShelters = [...shelters, response.data];
             }
             navigate('/shelters');

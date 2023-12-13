@@ -18,7 +18,9 @@ const ShowSheltersComponent = () => {
         }
     }
 
-    const handleShowPets = () => {};
+    const handleShowPets = (shelter) => {
+        navigate(`/shelter-pets/${shelter.id}`)
+    };
 
     useEffect(() => {
        const fetchData = async () => await fetchShelters();
@@ -35,19 +37,20 @@ const ShowSheltersComponent = () => {
         }
     };
 
-    const handleEdit = (shelter) => {
+    const handleAddEdit = (shelter) => {
         navigate(`/edit-shelter/${shelter.id}`, { state: { shelter }});
     };
 
 return (
     <>
         <h2>Shelters</h2>
+        <button onClick={() => handleAddEdit({})}>Add Shelter</button>
         {shelters.map(shelter => (
             <div key={shelter.id}>
                 <nav>
                     <ul>
                         <li>{shelter.name}</li>
-                        <li><button onClick={() => handleEdit(shelter)}>Edit</button></li>
+                        <li><button onClick={() => handleAddEdit(shelter)}>Edit</button></li>
                         <li><button onClick={() => handleDelete(shelter)}>Delete</button></li>
                         <li><button onClick={() => handleShowPets(shelter)}>View Pets</button></li>
                     </ul>

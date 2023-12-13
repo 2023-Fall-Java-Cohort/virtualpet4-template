@@ -12,6 +12,9 @@ import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/shelter")
@@ -40,7 +43,7 @@ public class ShelterController extends BaseController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getShelterById(@PathVariable long id, HttpServletRequest request) {
         try {
-             checkAccess(RoleEnum.GUEST, request);
+            checkAccess(RoleEnum.GUEST, request);
             return ResponseEntity.ok(shelterRepository.findById(id));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -50,7 +53,7 @@ public class ShelterController extends BaseController {
     @GetMapping("/pets/{id}")
     public ResponseEntity<?> getPetsById(@PathVariable long id, HttpServletRequest request) {
         try {
-             checkAccess(RoleEnum.GUEST, request);
+            checkAccess(RoleEnum.GUEST, request);
             Optional<ShelterModel> opShelter = shelterRepository.findById(id);
             if (opShelter.isPresent()) {
                 return ResponseEntity.ok(opShelter.get().getPets());
@@ -64,7 +67,7 @@ public class ShelterController extends BaseController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteShelter(@PathVariable long id, HttpServletRequest request) {
         try {
-             checkAccess(RoleEnum.ADMIN, request);
+            checkAccess(RoleEnum.ADMIN, request);
             shelterRepository.deleteById(id);
             Optional<ShelterModel> shelter = shelterRepository.findById(id);
             return ResponseEntity.ok(!shelter.isPresent());
@@ -73,11 +76,12 @@ public class ShelterController extends BaseController {
         }
     }
 
-    @PutMapping()
-    @PostMapping()
+    // @PutMapping() //no double mappings allowed
+    // @PostMapping()
+    @RequestMapping(method = { RequestMethod.POST, RequestMethod.PUT })
     public ResponseEntity<?> update(@RequestBody ShelterModel shelter, HttpServletRequest request) {
         try {
-             checkAccess(RoleEnum.MANAGER, request);
+            checkAccess(RoleEnum.MANAGER, request);
             return ResponseEntity.ok(shelterRepository.save(shelter));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
