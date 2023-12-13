@@ -1,23 +1,43 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ShowSheltersComponent = () => {
+    const navigate = useNavigate();
     const [shelters, setShelters] = useState([]);
+    const [shouldUpdate, setShouldUpdate] = useState(false);
 
-    const handleEdit = () => {};
-    const handleDelete = () => {};
+    const fetchShelters = async () => {
+        console.log('fetch shelters called')
+        try {
+            const response = await axios.get('/api/shelter');
+            setShelters(response.data);
+            setShouldUpdate(false);
+        } catch (error) {
+            console.error('Error fetching shelters: ' + error);
+        }
+    }
+
     const handleShowPets = () => {};
 
     useEffect(() => {
-        //get our shelters
-        axios.get('/api/shelter')
-        .then(response => {
-            console.log(response)
-            setShelters(response.data)
-        })
-        .catch(error => console.error("Error fetching shelters: ", error));
-    }, []);
+       const fetchData = async () => await fetchShelters();
+       fetchData();
+    }, [shouldUpdate]);
 
+    const handleDelete = (shelter) => {
+        // api call to delete the shelter
+        try {
+            axios.delete(`/api/shelter/${shelter.id}`);
+            setShelters(shelters.filter(each => each.id !== shelter.id));
+        } catch (error) {
+            console.error('Error deleting shelter');
+        }
+    };
+
+    const handleEdit = (shelter) => {
+        navigate(`/edit-shelter/${shelter.id}`, { state: { shelter }});
+    };
 
 return (
     <>

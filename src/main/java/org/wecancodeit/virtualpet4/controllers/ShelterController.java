@@ -73,6 +73,7 @@ public class ShelterController extends BaseController {
         }
     }
 
+    @PutMapping()
     @PostMapping()
     public ResponseEntity<?> update(@RequestBody ShelterModel shelter, HttpServletRequest request) {
         try {
